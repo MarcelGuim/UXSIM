@@ -6,12 +6,16 @@ from IPython.display import display
 from uxsim.DTAsolvers import *
 import time
 
-G, pos, colors, edges, junctions = create_graph('osm.net_Barcelona.xml')
-max_time = 5000
+max_time = 1500
 deltan = 5
 reaction_time = 1
+
+"""
+G, pos, colors, edges, junctions = create_graph('osm.net_Barcelona.xml')
+#G, pos, colors, edges, junctions = create_graph('osm.net_2.xml').
+
 W = World(
-    name="Barcelona_4",
+    name="Barcelona_completa_3",
     deltan=deltan,
     reaction_time=reaction_time,
     tmax=max_time,
@@ -27,26 +31,48 @@ for e in edges.values():
           length=max(round(float(e.length)),1), free_flow_speed=max(round(float(e.speed)),1), number_of_lanes=max(round(float(e.lanes)),1))
 
 i = 0
-while i < max_time-200:
+while i < 1:
     origin = random.choice(list(junctions.keys()))
     destination = random.choice(list(junctions.keys()))
-    W.adddemand(origin, destination, i, i+1, random.uniform(2, 5))
+    W.adddemand(origin, destination, i, i+25, random.uniform(10, 15))
     origin = random.choice(list(junctions.keys()))
     destination = random.choice(list(junctions.keys()))
-    W.adddemand(origin, destination, i, i+1, random.uniform(3, 7))
+    W.adddemand(origin, destination, i, i+50, random.uniform(13, 17))
     origin = random.choice(list(junctions.keys()))
     destination = random.choice(list(junctions.keys()))
-    W.adddemand(origin, destination, i, i+1, random.uniform(1, 2))
+    W.adddemand(origin, destination, i, i+35, random.uniform(21, 22))
     origin = random.choice(list(junctions.keys()))
     destination = random.choice(list(junctions.keys()))
-    W.adddemand(origin, destination, i, i+1, random.uniform(2, 9))
+    W.adddemand(origin, destination, i, i+24, random.uniform(12, 29))
     origin = random.choice(list(junctions.keys()))
     destination = random.choice(list(junctions.keys()))
-    W.adddemand(origin, destination, i, i+1, random.uniform(1, 4))
+    W.adddemand(origin, destination, i, i+45, random.uniform(1, 24))
     origin = random.choice(list(junctions.keys()))
     destination = random.choice(list(junctions.keys()))
-    W.adddemand(origin, destination, i, i+1, random.uniform(5, 8))
-    i += 1 # Create OD traffic demand. Parameters: origin node, destination node, start time, end time, demand flow rate
+    i += 1
+"""
+
+
+#W.save_scenario("Barcelona_Completa")
+W = World()
+World.load_scenario(W,"Barcelona_Completa")
+
+#SANTS --> PL MOLINA
+W.adddemand_area2area2(2.142605236350562, 41.38237266952552, 0.000898*2, 2.147248608720307, 41.40128926418698, 0.000898*2, 0, 100, 15 )
+#ZONA UNI--> GLORIES
+W.adddemand_area2area2(2.113386935119557, 41.384877806836236, 0.000898*2, 2.1864119207487254, 41.40314701241495, 0.000898*2, 0, 100, 15 )
+#PL CAT --> PL KENNEDY
+W.adddemand_area2area2(2.170289472837438, 41.387362292555665, 0.000898*2, 2.1371405377788366, 41.4097181271445, 0.000898*2, 0, 100, 15 )
+
+
+
+# SANTS:  2.142605236350562, 41.38237266952552
+#PL MOLINA: 2.147248608720307, 41.40128926418698
+#PL CAT: 2.170289472837438, 41.387362292555665
+#GLORIES: 2.1864119207487254, 41.40314701241495
+#LA MAQUINISTA: 2.1970493195741048, 41.440657791739056
+#ZONA UNI: 2.113386935119557, 41.384877806836236
+#PL KENNEDY:  2.1371405377788366, 41.4097181271445
 
 sample_time_between_timestamps = 2
 W.show_progress_deltat_timestep = sample_time_between_timestamps
@@ -119,5 +145,5 @@ W.analyzer.output_data()
 """
 """
 """
-W.analyzer.network_anim(animation_speed_inverse=15, timestep_skip=30, detailed=0, network_font_size=0)
-W.analyzer.network_fancy(animation_speed_inverse=15, sample_ratio=0.3, interval=3, trace_length=3, network_font_size=0)
+W.analyzer.network_anim(animation_speed_inverse=10, timestep_skip=30, detailed=0, network_font_size=0)
+W.analyzer.network_fancy(animation_speed_inverse=10, sample_ratio=0.3, interval=3, trace_length=3, network_font_size=0)

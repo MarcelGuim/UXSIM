@@ -5,6 +5,7 @@ import time
 import random
 import numpy as np
 import matplotlib as mpl
+import sumolib
 
 class EdgeClass:
     def __init__(self,id, lanes, length, speed, outgoing_edges, incoming_edges, vehicle_speed, number_of_vehicles=0):
@@ -59,6 +60,8 @@ class JunctionClass:
         return [self.id, self.incoming, self.has_tls, self.x, self.y]
 
 def create_graph(filename):
+    net = sumolib.net.readNet(filename)
+    
     tree = ET.parse(filename)
     root = tree.getroot()
     root.tag
@@ -87,8 +90,7 @@ def create_graph(filename):
         incoming_lanes = junction.attrib['incLanes'].split()
         incoming_edges = []
         has_tls = 0
-        x = junction.attrib['x']
-        y = junction.attrib['y']
+        x,y = net.convertXY2LonLat(float(junction.attrib['x']), float(junction.attrib['y']))
         if x == 0 or y == 0:
             print("Error in junction coordinates")
         for i in incoming_lanes:
