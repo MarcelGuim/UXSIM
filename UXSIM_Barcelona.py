@@ -5,11 +5,38 @@ import pandas as pd
 from IPython.display import display
 from uxsim.DTAsolvers import *
 import time
+import statistics as statis
 
-max_time = 1500
+
+max_time = 2000
 deltan = 5
 reaction_time = 1
 
+#region Set the edge parameters
+"""
+G, pos, colors, edges, junctions = create_graph('osm.net_Barcelona.xml')
+junct = pd.DataFrame(columns=["id","incoming","x","y"])
+i = 0
+for j in junctions.values():
+    junct.loc[i] = [j.id, j.incoming, j.x, j.y]
+    i += 1
+
+edg = pd.DataFrame(columns=["id", "lanes","length", "speed", "k_jam", "inc_x", "inc_y", "out_x", "out_y"])
+i = 0
+for e in edges.values():
+    try:    
+        o_n = junct.loc[junct["id"] == e.outgoing_edges].iloc[0]
+        d_n = junct.loc[junct["id"] == e.incoming_edges].iloc[0]
+        edg.loc[i] = [e.id, e.lanes, e.length, e.speed, 1000/6.36*e.lanes, o_n["x"], o_n["y"], d_n["x"], d_n["y"]]
+        i += 1
+    except:
+        k = 2
+edg.to_parquet("edges.parquet", index=False)
+junct.to_parquet("junctions.parquet", index=False)
+"""
+#endregion
+
+#region Work with the traffic set by edges
 """
 G, pos, colors, edges, junctions = create_graph('osm.net_Barcelona.xml')
 #G, pos, colors, edges, junctions = create_graph('osm.net_2.xml').
@@ -51,21 +78,96 @@ while i < 1:
     destination = random.choice(list(junctions.keys()))
     i += 1
 """
-
-
 #W.save_scenario("Barcelona_Completa")
+#endregion
+
 W = World()
-World.load_scenario(W,"Barcelona_Completa")
+nodes, links = World.load_scenario(W,"Barcelona_Completa")
+W.TMAX = 3600
+W.name = "Test_for_complete_barcelona_2"
+traffic = 2
+time_traffic = 1500
+#region  E--> W
+#RAZZ --> PL ESPANYA
+W.adddemand_area2area2(2.1910058153933245, 41.39784487894918, 0.000898*3, 2.1518836051834, 41.377184304172175, 0.000898*3, 0, time_traffic, traffic )
+#RAZZ --> SANTS
+W.adddemand_area2area2(2.1910058153933245, 41.39784487894918, 0.000898*3, 2.1518836051834, 41.377184304172175, 0.000898*3, 0, time_traffic, traffic )
+#RAZZ --> PARIS_TARRADELLES
+W.adddemand_area2area2(2.1910058153933245, 41.39784487894918, 0.000898*3, 2.1518836051834, 41.377184304172175, 0.000898*3, 0, time_traffic, traffic )
+#L'AUDITORI --> PL ESPANYA
+W.adddemand_area2area2(2.1834959345843443, 41.39737388125027, 0.000898*3, 2.1518836051834, 41.377184304172175, 0.000898*3, 0, time_traffic, traffic )
+#L'AUDITORI --> SANTS
+W.adddemand_area2area2(2.1834959345843443, 41.39737388125027, 0.000898*3, 2.1518836051834, 41.377184304172175, 0.000898*3, 0, time_traffic, traffic )
+#L'AUDITORI --> PARIS_TARRADELLES
+W.adddemand_area2area2(2.1834959345843443, 41.39737388125027, 0.000898*3, 2.1518836051834, 41.377184304172175, 0.000898*3, 0, time_traffic, traffic )
+#GLORIES --> PL ESPANYA
+W.adddemand_area2area2(2.1864119207487254, 41.40314701241495, 0.000898*3, 2.1518836051834, 41.377184304172175, 0.000898*3, 0, time_traffic, traffic )
+#GLORIES --> SANTS
+W.adddemand_area2area2(2.1864119207487254, 41.40314701241495, 0.000898*3, 2.1518836051834, 41.377184304172175, 0.000898*3, 0, time_traffic, traffic )
+#GLORIES --> PARIS_TARRADELLES
+W.adddemand_area2area2(2.1864119207487254, 41.40314701241495, 0.000898*3, 2.1518836051834, 41.377184304172175, 0.000898*3, 0, time_traffic, traffic )
+#endregion
 
-#SANTS --> PL MOLINA
-W.adddemand_area2area2(2.142605236350562, 41.38237266952552, 0.000898*2, 2.147248608720307, 41.40128926418698, 0.000898*2, 0, 100, 15 )
-#ZONA UNI--> GLORIES
-W.adddemand_area2area2(2.113386935119557, 41.384877806836236, 0.000898*2, 2.1864119207487254, 41.40314701241495, 0.000898*2, 0, 100, 15 )
-#PL CAT --> PL KENNEDY
-W.adddemand_area2area2(2.170289472837438, 41.387362292555665, 0.000898*2, 2.1371405377788366, 41.4097181271445, 0.000898*2, 0, 100, 15 )
+#region W --> E
+#PL ESPANYA --> RAZZ
+W.adddemand_area2area2(2.1518836051834, 41.377184304172175, 0.000898*3, 2.1910058153933245, 41.39784487894918, 0.000898*3, 0, time_traffic, traffic )
+#PL ESPANYA --> L'AUDITORI
+W.adddemand_area2area2(2.1518836051834, 41.377184304172175, 0.000898*3, 2.1834959345843443, 41.39737388125027, 0.000898*3, 0, time_traffic, traffic )
+#PL ESPANYA --> GLORIES
+W.adddemand_area2area2(2.1518836051834, 41.377184304172175, 0.000898*3, 2.1864119207487254, 41.40314701241495, 0.000898*3, 0, time_traffic, traffic )
+#SANTS --> RAZZ
+W.adddemand_area2area2(2.142605236350562, 41.38237266952552, 0.000898*3, 2.1910058153933245, 41.39784487894918, 0.000898*3, 0, time_traffic, traffic )
+#SANTS --> L'AUDITORI
+W.adddemand_area2area2(2.142605236350562, 41.38237266952552, 0.000898*3, 2.1834959345843443, 41.39737388125027, 0.000898*3, 0, time_traffic, traffic )
+#SANTS --> GLORIES
+W.adddemand_area2area2(2.142605236350562, 41.38237266952552, 0.000898*3, 2.1864119207487254, 41.40314701241495, 0.000898*3, 0, time_traffic, traffic )
+#PARIS_TARRADELLES --> RAZZ
+W.adddemand_area2area2(2.142617871646794, 41.38569821918521, 0.000898*3, 2.1910058153933245, 41.39784487894918, 0.000898*3, 0, time_traffic, traffic )
+#PARIS_TARRADELLES --> L'AUDITORI
+W.adddemand_area2area2(2.142617871646794, 41.38569821918521, 0.000898*3, 2.1834959345843443, 41.39737388125027, 0.000898*3, 0, time_traffic, traffic )
+#PARIS_TARRADELLES --> GLORIES
+W.adddemand_area2area2(2.142617871646794, 41.38569821918521, 0.000898*3, 2.1864119207487254, 41.40314701241495, 0.000898*3, 0, time_traffic, traffic )
+#endregion
 
+#region N --> S
+#MARINA--> DIAGONAL_SICILIA
+W.adddemand_area2area2(2.186760809819229, 41.39475269483569, 0.000898*3, 2.175002511446816, 41.40045252363546, 0.000898*3, 0, time_traffic, traffic )
+#ARC DE TRIONF--> VERDAGER
+W.adddemand_area2area2(2.179686362185908, 41.39169941176438, 0.000898*3, 2.167866529567611, 41.39887677448817, 0.000898*3, 0, time_traffic, traffic )
+#Urquinaona--> DIAGONAL_ROGER_LLURIA
+W.adddemand_area2area2(2.1732415429399263, 41.38926656914354, 0.000898*3, 2.1632935372472564, 41.39752220367918, 0.000898*3, 0, time_traffic, traffic )
+#PL UNI--> JARDINETS DE GRACIA
+W.adddemand_area2area2(2.1640114366404832, 41.38569497148233, 0.000898*3, 2.159311981359677, 41.396698512347605, 0.000898*3, 0, time_traffic, traffic )
+#SANT ANTONI--> DIAGONAL_BALMES
+W.adddemand_area2area2(2.1621233850851613, 41.37952456335646, 0.000898*3, 2.154613470457876, 41.39531084575437, 0.000898*3, 0, time_traffic, traffic )
+#PARAL·LEL--> DIAGONAL_MUNTANER
+W.adddemand_area2area2(2.167739621349403, 41.37517562555826, 0.000898*3, 2.1496482613474606, 41.39408485618872, 0.000898*3, 0, time_traffic, traffic )
+#POBLE SEC--> PL FRANCESC MACIA
+W.adddemand_area2area2(2.1604166622176115, 41.3751144275215, 0.000898*3, 2.1439731239991375, 41.392442713721515, 0.000898*3, 0, time_traffic, traffic )
+#PL ESPANYA--> LA ILLA
+W.adddemand_area2area2(2.1493439402331846, 41.37500423375397, 0.000898*3, 2.135239399502743, 41.39022616032509, 0.000898*3, 0, time_traffic, traffic )
+#endregion
 
+#region S --> N
+#DIAGONAL_SICILIA --> MARINA
+W.adddemand_area2area2(2.175002511446816, 41.40045252363546, 0.000898*3,2.186760809819229, 41.39475269483569, 0.000898*3, 0, time_traffic, traffic )
+#VERDAGER --> ARC DE TRIONF
+W.adddemand_area2area2(2.167866529567611, 41.39887677448817, 0.000898*3, 2.179686362185908, 41.39169941176438, 0.000898*3, 0, time_traffic, traffic )
+#DIAGONAL_ROGER_LLURIA --> Urquinaona
+W.adddemand_area2area2(2.1632935372472564, 41.39752220367918, 0.000898*3,2.1732415429399263, 41.38926656914354, 0.000898*3, 0, time_traffic, traffic )
+#JARDINETS DE GRACIA --> PL UNI
+W.adddemand_area2area2(2.159311981359677, 41.396698512347605, 0.000898*3, 2.1640114366404832, 41.38569497148233, 0.000898*3, 0, time_traffic, traffic )
+#DIAGONAL_BALMES --> SANT ANTONI
+W.adddemand_area2area2(2.154613470457876, 41.39531084575437, 0.000898*3, 2.1621233850851613, 41.37952456335646, 0.000898*3, 0, time_traffic, traffic )
+#DIAGONAL_MUNTANER--> PARAL·LEL
+W.adddemand_area2area2(2.1496482613474606, 41.39408485618872, 0.000898*3, 2.167739621349403, 41.37517562555826, 0.000898*3, 0, time_traffic, traffic )
+#PL FRANCESC MACIA --> POBLE SEC
+W.adddemand_area2area2(2.1439731239991375, 41.392442713721515, 0.000898*3, 2.1604166622176115, 41.3751144275215, 0.000898*3, 0, time_traffic, traffic )
+#LA ILLA --> PL ESPANYA
+W.adddemand_area2area2(2.135239399502743, 41.39022616032509, 0.000898*3, 2.1493439402331846, 41.37500423375397, 0.000898*3, 0, time_traffic, traffic )
+#endregion
 
+#region Traffic data W-E
 # SANTS:  2.142605236350562, 41.38237266952552
 #PL MOLINA: 2.147248608720307, 41.40128926418698
 #PL CAT: 2.170289472837438, 41.387362292555665
@@ -73,6 +175,34 @@ W.adddemand_area2area2(2.170289472837438, 41.387362292555665, 0.000898*2, 2.1371
 #LA MAQUINISTA: 2.1970493195741048, 41.440657791739056
 #ZONA UNI: 2.113386935119557, 41.384877806836236
 #PL KENNEDY:  2.1371405377788366, 41.4097181271445
+#RAZZMATAZZ: 2.1910058153933245, 41.39784487894918
+#L'AUDITORI: 2.1834959345843443, 41.39737388125027
+#PL ESPANYA: 2.1518836051834, 41.377184304172175
+#PARIS_JOSEP TARRADELLES: 2.142617871646794, 41.38569821918521
+#endregion
+
+#region Traffic data N-S
+#Zona S:
+#MARINA: 2.186760809819229, 41.39475269483569
+#ARC DE TRIONF: 2.179686362185908, 41.39169941176438
+#Urquinaona: 2.1732415429399263, 41.38926656914354
+#PL UNI: 2.1640114366404832, 41.38569497148233
+#SANT ANTONI: 2.1621233850851613, 41.37952456335646
+#PARAL·LEL: 2.167739621349403, 41.37517562555826
+#POBLE SEC: 2.1604166622176115, 41.3751144275215
+#PL ESPANYA: 2.1493439402331846, 41.37500423375397
+
+#ZONA N:
+#LA ILLA: 2.135239399502743, 41.39022616032509
+#PL FRANCESC MACIA: 2.1439731239991375, 41.392442713721515
+#DIAGONAL_MUNTANER: 2.1496482613474606, 41.39408485618872
+#DIAGONAL_BALMES: 2.154613470457876, 41.39531084575437
+#JARDINETS DE GRACIA: 2.159311981359677, 41.396698512347605
+#DIAGONAL_ROGER_LLURIA: 2.1632935372472564, 41.39752220367918
+#VERDAGER: 2.167866529567611, 41.39887677448817
+#DIAGONAL_ROGER_DE_FLOR: 2.171609402654212, 41.399628672339595
+#DIAGONAL_SICILIA: 2.175002511446816, 41.40045252363546
+#endregion
 
 sample_time_between_timestamps = 2
 W.show_progress_deltat_timestep = sample_time_between_timestamps
@@ -81,6 +211,7 @@ results = []
 average_time = []
 time1 = time.perf_counter()
 time2 = time.perf_counter()
+
 def log_link_data(W):
     global current_time, results, time1, time2, average_time
     current_time += 5
@@ -89,61 +220,35 @@ def log_link_data(W):
     elapsed_time = time2 - time1
     time1 = time2
     average_time.append(elapsed_time)
-    for e in edges.values():
-        speed = W.get_link(e.id).speed
-        num_veh = W.get_link(e.id).num_vehicles
-        free_flow_speed = W.get_link(e.id).free_flow_speed
-        results_temporary.append({"edge": e.id,"num_veh": num_veh, "speed": speed, "free_flow_speed": free_flow_speed})
+    for e in links:
+        num_veh = W.get_link(e).num_vehicles
+        results_temporary.append({"edge": e,"num_veh": num_veh})
         #if speed != free_flow_speed:
             #print(f"Link {e.id} has speed {speed} and {num_veh} vehicles (free flow speed: {free_flow_speed})")
     results.append({"time": current_time, "data": results_temporary})
 
-#W.user_function = log_link_data
+W.user_function = log_link_data
 #W.set_routing_mode("dynamic")
 W.route_choice_principle = "DUE"
 #W.route_choice_principle = "UE"
 W.exec_simulation()
-"""
-with open('simulation_results_1.csv', 'w', newline='') as csvfile:
-    fieldnames = ['time', 'edge', 'num_veh', 'speed', 'free_flow_speed']
-    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-    writer.writeheader()
-    for result in results:
-        for data in result["data"]:
-            writer.writerow({"time": result["time"], **data})
-"""
-W.analyzer.print_simple_stats()
-"""
-total_average_time = sum(average_time) / len(average_time)
-print(f"Average time per log_link_data call: {total_average_time} seconds")
-W.adddemand_area2area2
-"""
-"""
-#overall
-df = W.analyzer.basic_to_pandas()
-display(df)
 
-#OD-specific traffic situation
-df = W.analyzer.od_to_pandas()
-display(df)
+frames = []
+for result in results:
+    # Create a temporary DataFrame for each time step
+    df = pd.DataFrame(result["data"])
+    df["time"] = result["time"]  # add the time column
+    frames.append(df)
 
-#MFD
-df = W.analyzer.mfd_to_pandas()
-display(df)
-"""
-"""
-#within link
-df = W.analyzer.link_traffic_state_to_pandas()
-display(df)
-df.to_csv('link_traffic.csv', index=False)
+# Combine all partial DataFrames into one
+all_streets_df = pd.concat(frames, ignore_index=True)
 
-#vehicle-level
-df = W.analyzer.vehicles_to_pandas()
-display(df)
-df.to_csv('vehicles.csv', index=False)
-W.analyzer.output_data()
-"""
-"""
-"""
-W.analyzer.network_anim(animation_speed_inverse=10, timestep_skip=30, detailed=0, network_font_size=0)
-W.analyzer.network_fancy(animation_speed_inverse=10, sample_ratio=0.3, interval=3, trace_length=3, network_font_size=0)
+# Save as Parquet
+all_streets_df.to_parquet("simulation_results_4.parquet", index=False)
+
+print(statis.mean(average_time))
+
+#W.analyzer.print_simple_stats()
+#W.analyzer.network_anim(animation_speed_inverse=10, timestep_skip=30, detailed=0, network_font_size=0)
+#W.analyzer.network_fancy(animation_speed_inverse=10, sample_ratio=0.3, interval=3, trace_length=3, network_font_size=0)
+

@@ -8,10 +8,9 @@ W = World(
     random_seed=0
 )
 W.route_pref_for_vehs = 0
-W.homogene
 # Scenario definition
 W.load_scenario("sfnetwork.uxsim_scenario")
-
+edges = W.get_link()
 # Simulation execution
 W.exec_simulation()
 
