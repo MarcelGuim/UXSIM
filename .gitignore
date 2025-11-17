@@ -1,2 +1,5 @@
 # Ignorar tots els fitxers HTML
 *.html
+.parquet
+.csv
+mapas

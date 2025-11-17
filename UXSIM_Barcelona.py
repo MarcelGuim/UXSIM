@@ -6,7 +6,8 @@ from IPython.display import display
 from uxsim.DTAsolvers import *
 import time
 import statistics as statis
-
+from coordinates_treatment import *
+import random
 
 max_time = 2000
 deltan = 5
@@ -83,10 +84,11 @@ while i < 1:
 
 W = World()
 nodes, links = World.load_scenario(W,"Barcelona_Completa")
-W.TMAX = 3600
+W.TMAX = 4000
 W.name = "Test_for_complete_barcelona_2"
-traffic = 2
-time_traffic = 1500
+traffic = 0.1
+time_traffic = 1000
+"""
 #region  E--> W
 #RAZZ --> PL ESPANYA
 W.adddemand_area2area2(2.1910058153933245, 41.39784487894918, 0.000898*3, 2.1518836051834, 41.377184304172175, 0.000898*3, 0, time_traffic, traffic )
@@ -166,7 +168,7 @@ W.adddemand_area2area2(2.1439731239991375, 41.392442713721515, 0.000898*3, 2.160
 #LA ILLA --> PL ESPANYA
 W.adddemand_area2area2(2.135239399502743, 41.39022616032509, 0.000898*3, 2.1493439402331846, 41.37500423375397, 0.000898*3, 0, time_traffic, traffic )
 #endregion
-
+"""
 #region Traffic data W-E
 # SANTS:  2.142605236350562, 41.38237266952552
 #PL MOLINA: 2.147248608720307, 41.40128926418698
@@ -204,6 +206,22 @@ W.adddemand_area2area2(2.135239399502743, 41.39022616032509, 0.000898*3, 2.14934
 #DIAGONAL_SICILIA: 2.175002511446816, 41.40045252363546
 #endregion
 
+
+#region Traffic with points every X distance
+distance = 200
+puntsNE_SE, puntsSE_S, puntsS_SW, puntsSW_NW, puntsNW_N, puntsN_NE = get_points(distance)
+punts_N = puntsNW_N + puntsN_NE
+punts_W = puntsS_SW+ puntsSW_NW + puntsNW_N
+punts_S = puntsSE_S+ puntsS_SW
+for p in puntsNE_SE:
+    final = random.choice(punts_W)
+    W.adddemand_area2area2(p[1], p[0], distance/111320/2, final[1], final[0], distance/111320/2, 0, time_traffic, traffic)
+    W.adddemand_area2area2(p[1], p[0], distance/111320/2, final[1], final[0], distance/111320/2, 0, time_traffic, traffic )
+    W.adddemand_area2area2(p[1], p[0], distance/111320/2, final[1], final[0], distance/111320/2, 0, time_traffic, traffic )
+
+#W.adddemand_area2area2(2.186760809819229, 41.39475269483569, distance/111320/2, 2.175002511446816, 41.40045252363546, distance/111320/2, 0, time_traffic, traffic )
+
+#endregion
 sample_time_between_timestamps = 2
 W.show_progress_deltat_timestep = sample_time_between_timestamps
 current_time = 0
@@ -244,7 +262,7 @@ for result in results:
 all_streets_df = pd.concat(frames, ignore_index=True)
 
 # Save as Parquet
-all_streets_df.to_parquet("simulation_results_4.parquet", index=False)
+all_streets_df.to_parquet("simulation_results_TEST_AMB_PUNTS_RODEJANT_MAPA.parquet", index=False)
 
 print(statis.mean(average_time))
 
