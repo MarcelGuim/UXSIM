@@ -1,9 +1,7 @@
 from graph_creator import *
 from uxsim import *
-from uxsim.ResultGUIViewer import ResultGUIViewer
 import pandas as pd
 from IPython.display import display
-from uxsim.DTAsolvers import *
 import time
 import statistics as statis
 from coordinates_treatment import *
@@ -15,7 +13,7 @@ reaction_time = 1
 
 #region Set the edge parameters
 """
-G, pos, colors, edges, junctions = create_graph('osm.net_Barcelona.xml')
+G, pos, colors, edges, junctions = create_graph('UXSIM/osm.net_2.xml')
 junct = pd.DataFrame(columns=["id","incoming","x","y"])
 i = 0
 for j in junctions.values():
@@ -34,13 +32,12 @@ for e in edges.values():
         k = 2
 edg.to_parquet("edges.parquet", index=False)
 junct.to_parquet("junctions.parquet", index=False)
-"""
 #endregion
-
-#region Work with the traffic set by edges
 """
-G, pos, colors, edges, junctions = create_graph('osm.net_Barcelona.xml')
-#G, pos, colors, edges, junctions = create_graph('osm.net_2.xml').
+#region Work with the traffic set by edges
+
+#G, pos, colors, edges, junctions = create_graph('osm.net_Barcelona.xml')
+G, pos, colors, edges, junctions = create_graph('UXSIM/osm.net_2.xml')
 
 W = World(
     name="Barcelona_completa_3",
@@ -57,7 +54,7 @@ for j in junctions.values():
 for e in edges.values():
     W.addLink(name=e.id, start_node=e.incoming_edges, end_node=e.outgoing_edges,
           length=max(round(float(e.length)),1), free_flow_speed=max(round(float(e.speed)),1), number_of_lanes=max(round(float(e.lanes)),1))
-
+"""
 i = 0
 while i < 1:
     origin = random.choice(list(junctions.keys()))
@@ -79,7 +76,7 @@ while i < 1:
     destination = random.choice(list(junctions.keys()))
     i += 1
 """
-#W.save_scenario("Barcelona_Completa")
+W.save_scenario("escenari_petit")
 #endregion
 
 W = World()

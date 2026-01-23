@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+        <name>Hospital_Clinic.kml</name>
+        <StyleMap id="m_ylw-pushpin">
+                <Pair>
+                        <key>normal</key>
+                        <styleUrl>#s_ylw-pushpin</styleUrl>
+                </Pair>
+                <Pair>
+                        <key>highlight</key>
+                        <styleUrl>#s_ylw-pushpin_hl</styleUrl>
+                </Pair>
+        </StyleMap>
+        <Style id="s_ylw-pushpin">
+                <IconStyle>
+                        <scale>1.1</scale>
+                        <Icon>
+                                <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+                        </Icon>
+                        <hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+                </IconStyle>
+        </Style>
+        <Style id="s_ylw-pushpin_hl">
+                <IconStyle>
+                        <scale>1.3</scale>
+                        <Icon>
+                                <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+                        </Icon>
+                        <hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+                </IconStyle>
+        </Style>
+        <Placemark>
+                <name>Hospital_Clinic</name>
+                <styleUrl>#m_ylw-pushpin</styleUrl>
+                <LineString>
+                        <tessellate>1</tessellate>
+                        <coordinates>
+                                2.15963264462776,41.39670897441044,0 2.170223888319851,41.38798156885225,0 2.164193129301639,41.3856249901244,0 2.163196030770957,41.37850956683661,0 2.158657501019559,41.37509323835233,0 2.149240050188497,41.37499116770771,0 2.135765234541791,41.36500030557167,0 2.133143194734675,41.369860118905710,0 2.133327893322978,41.36978504857328,0 2.13322431658779,41.36981784005003,0 2.13308903708509,41.36994694151431,0 2.13286501989687,41.37000930595175,0 2.131996998734442,41.37159451470988,0 2.129488525734244,41.37803051240823,0 2.127648751894931,41.38344809887241,0 2.127025756179934,41.38582255854219,0 2.127302874001484,41.38856001113767,0 2.128622465517682,41.38884700070878,0 2.15963264462776,41.39670897441044,0
+                        </coordinates>
+                </LineString>
+                <atom:link rel="app" href="https://www.google.com/earth/about/versions/#earth-pro" title="Google Earth Pro 7.3.6.10441"></atom:link>
+        </Placemark>
+</Document>
+</kml>
+
+

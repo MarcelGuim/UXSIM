@@ -3,3 +3,8 @@
 .parquet
 .csv
 mapas
+RESULTS/
+__pycache__
+borrar*
+*obsolete*
+*.png

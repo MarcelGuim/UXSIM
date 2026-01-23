@@ -1,0 +1,101 @@
+import json
+import pandas as pd
+import folium
+from matplotlib import cm, colors
+from matplotlib import colors as mcolors
+from branca.colormap import LinearColormap
+
+time_increase = 3600 / 6
+
+def get_mapa_aggregated(values_filename, map_filename, aggregations_json):
+    edges = pd.read_parquet("edges.parquet")
+    values = pd.read_parquet(values_filename)
+    
+    # Group time into intervals
+    values["time_group"] = (values["time"] // time_increase) * time_increase
+    values = pd.merge(values, edges, left_on="edge", right_on="id", how="left")
+    
+    # Compute LOS per edge
+    cols_to_numeric = ["num_veh", "lanes", "length", "speed", "k_jam"]
+    for c in cols_to_numeric:
+        values[c] = pd.to_numeric(values[c], errors="coerce")
+    
+    values["k_street"] = values["num_veh"] / (values["lanes"] * values["length"]) * 1000
+    values["v_max"] = values["speed"]
+    values["v_veh"] = values["v_max"] * (1 - values["k_street"] / values["k_jam"])
+    
+    values["LOS"] = pd.cut(
+        values["v_veh"] / values["v_max"],
+        bins=[-float("inf"), 0.31, 0.4, 0.51, 0.67, 0.8, float("inf")],
+        labels=[5, 4, 3, 2, 1, 0],
+        right=True
+    ).astype(int)
+    
+    # Average LOS per edge and time_group
+    grouped_edges = (
+        values.groupby(["edge", "time_group"], as_index=False)
+        .agg({"LOS": "mean"})
+        .rename(columns={"LOS": "mean_LOS"})
+    )
+    
+    # Load aggregation JSON
+    with open(aggregations_json, "r", encoding="utf-8") as f:
+        aggregations = json.load(f)
+    
+    k = 3600
+    while k <= float(grouped_edges["time_group"].max()):
+        mapa = folium.Map(location=[41.40371878522945, 2.174445524020986], zoom_start=13)
+        
+        for agg_id, agg_data in aggregations.items():
+            # Get all edges in this aggregation
+            edges_in_agg = agg_data["list_of_edges"]
+            
+            # Filter LOS values for this time_group and these edges
+            filtered = grouped_edges[
+                (grouped_edges["time_group"] == k) & (grouped_edges["edge"].isin(edges_in_agg))
+            ]
+            
+            if filtered.empty:
+                continue
+            
+            # Average LOS across all edges in the aggregation
+            agg_LOS = filtered["mean_LOS"].mean()
+            
+            # Draw all edge segments in this aggregation
+            for edge_geom in agg_data["edges_geometry"]:
+                x_in, y_in = edge_geom["x_origin"], edge_geom["y_origin"]
+                x_out, y_out = edge_geom["x_dest"], edge_geom["y_dest"]
+                
+                # Map LOS to color
+                norm = colors.Normalize(vmin=0, vmax=6) 
+                colormap = cm.get_cmap('jet')
+                rgba = colormap(norm(agg_LOS))
+                color = mcolors.to_hex(rgba)
+                
+                folium.PolyLine(
+                    locations=[(y_in, x_in), (y_out, x_out)],
+                    color=color,
+                    weight=4,
+                    opacity=0.8,
+                    line_cap="butt",
+                    line_join="miter",
+                    tooltip=f"{agg_id}: {agg_LOS:.2f}"
+                ).add_to(mapa)
+        
+        # Add legend
+        LinearColormap(
+            colors=['blue', 'cyan', 'green', 'yellow', 'orange', 'red'], 
+            vmin=0, vmax=6, 
+            caption='LOS (average per aggregation)'
+        ).add_to(mapa)
+        
+        # Save HTML
+        mapa.save(f"mapas/{map_filename}_{int(k)}.html")
+        k += time_increase
+
+# Example usage
+get_mapa_aggregated(
+    "RESULTS/simulation_results_TEST_AMB_PUNTS_RODEJANT_MAPA_k300_j2_t658.parquet",
+    "simulation_results_aggregated_median",
+    "edge_aggregations.json"
+)
