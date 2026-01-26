@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>hospital_clinic.kml</name>
+	<StyleMap id="m_ylw-pushpin">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#s_ylw-pushpin</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#s_ylw-pushpin_hl</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="s_ylw-pushpin">
+		<IconStyle>
+			<scale>1.1</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+	</Style>
+	<Style id="s_ylw-pushpin_hl">
+		<IconStyle>
+			<scale>1.3</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+	</Style>
+	<Placemark>
+		<name>hospital_clinic</name>
+		<styleUrl>#m_ylw-pushpin</styleUrl>
+		<LineString>
+			<tessellate>1</tessellate>
+			<coordinates>
+				2.159485150079965,41.39705756673801,0 2.160033552170504,41.39722282893027,0 2.161351600935035,41.39648323887784,0 2.163771508585699,41.3941711647948,0 2.17081196307946,41.38781264718151,0 2.164886411291096,41.38533381267953,0 2.163926177312125,41.37852703642412,0 2.168752849660467,41.37495942717214,0 2.168852731484279,41.37467128598256,0 2.150081397140564,41.37438971821707,0 2.149358577160274,41.37441927435906,0 2.136193231298387,41.36425444755913,0 2.134474959161892,41.36429666749304,0 2.131727721735024,41.37105619220343,0 2.129802128152098,41.3753592325934,0 2.12759940830082,41.38175278260361,0 2.12630363916543,41.3854058676764,0 2.126173700486533,41.38821125587735,0 2.127469935365247,41.38916188647853,0 2.129803501530909,41.3895855459701,0 2.159485150079965,41.39705756673801,0 
+			</coordinates>
+		</LineString>
+		<atom:link rel="app" href="https://www.google.com/earth/about/versions/#earth-pro" title="Google Earth Pro 7.3.6.10441"></atom:link>
+	</Placemark>
+</Document>
+</kml>

@@ -1,10 +1,12 @@
 # Ignorar tots els fitxers HTML
 *.html
-.parquet
-.csv
+*.parquet
+*.csv
 mapas
-RESULTS/
+*RESULTS/
 __pycache__
 borrar*
 *obsolete*
 *.png
+*.gif
+

@@ -19,8 +19,8 @@ def create_graph(edges, junctions):
         if G.has_node(e.incoming_edges) and G.has_node(e.outgoing_edges):
             G.add_edge(e.incoming_edges, e.outgoing_edges, **e.as_dict())
         else:
-            print("Not found")
- 
+            print("Not found") 
+    #region Deprecated
     """
     #This part of the code removes nodes that have just one incoming and 
     #one outgoing edges, they are the nodes that SUMO enters to representschanges 
@@ -29,7 +29,7 @@ def create_graph(edges, junctions):
     
     #ATENTION!!!!!!!!!!!!!!!!
     #This does not remove the nodes that have bidirectional edges just one of each, it would be the 
-    # same scenario as before, but these can't be eliminated
+    #same scenario as before, but these can't be eliminated
     candidates = [n for n in G.nodes if G.in_degree(n) == 1 and G.out_degree(n) == 1]
     removed = []
     for n in candidates:
@@ -49,10 +49,10 @@ def create_graph(edges, junctions):
     nodes_to_remove = [n for n, d in G.nodes(data=True) if len(list(G.neighbors(n))) == 0]
     G.remove_nodes_from(nodes_to_remove)
     """
+    #endregion
     pos = {j.id: (float(j.x), float(j.y)) for j in junctions.values()}
     colors = [d["color"] for _, d in G.nodes(data=True)]
     return G, pos, colors, edges, junctions
-    
 
 def draw_graph(G, pos, colors, filename):
     #This function will draw the graph and save it in a .png file with the name filename
@@ -75,8 +75,8 @@ def draw_graph(G, pos, colors, filename):
 
 def show_graph_in_map(G, pos, filename):
     mapa = folium.Map(
-        location=[41.40371878522945, 2.174445524020986],
-        zoom_start=13
+        location=[41.38246354510279, 2.1472665793524985],
+        zoom_start=14
     )
     for u, v, data in G.edges(data=True):
         edge_id = data.get("id")
@@ -91,17 +91,18 @@ def show_graph_in_map(G, pos, filename):
             ],
             color="#000000",
         ).add_to(mapa)
-    mapa.save(f"hospital_clinic/{filename}_2.html")
+    mapa.save(f"hospital_clinic/{filename}_4.html")
 
 
-
+"""
 edges, junctions = get_points_in_area(
-    "hospital_clinic/hospital_clinic.klm", 
+    "hospital_clinic/hospital_clinic.kml", 
     "hospital_clinic/osm.net_BARCELONA.xml"
-    )
+)
 
 G, pos, colors, edges, junctions = create_graph(edges, junctions)
 
 #draw_graph(G, pos, colors, "hospital_clinic_graph")
 
 show_graph_in_map(G, pos, "mapa_clinic")
+"""

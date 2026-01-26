@@ -143,7 +143,7 @@ def get_points_in_area(area_definition_klm, points_to_check):
 
 
 ### From this point forward functions are deprecated, please refer to the graph_creator file for new versions ###
-
+"""
 def create_graph(filename):
 #This function is deprecated, please use the functions edges_junctions_getter to obtain edges and junctions and the function create graph from graph_creator to create the graph from these junctions and edges.
 
@@ -262,3 +262,4 @@ def update_edge_vehicles_speed_by_id(G, edge_id, new_value, edges):
         return True
     except:
         return False
+"""
