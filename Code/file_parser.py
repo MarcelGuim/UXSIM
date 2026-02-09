@@ -83,7 +83,7 @@ def edges_junctions_getter(filename):
                 lane_data = lane.attrib.copy()
                 i += 1
             
-            edge = EdgeClass(edge_data['id'], i, lane_data['length'], lane_data['speed'], edge_data['to'], edge_data['from'],8.33, 15)
+            edge = EdgeClass(edge_data['id'], i, float(lane_data['length']), lane_data['speed'], edge_data['to'], edge_data['from'],8.33, 15)
             edges[edge_data['id']] = edge
 
     junctions = {}

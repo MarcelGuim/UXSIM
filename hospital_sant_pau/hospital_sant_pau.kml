@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
 <Document>
-	<name>hospital_del_mar_full_edges.kml</name>
+	<name>hospital_san_pau.kml</name>
 	<StyleMap id="m_ylw-pushpin">
 		<Pair>
 			<key>normal</key>
@@ -31,12 +31,12 @@
 		</IconStyle>
 	</Style>
 	<Placemark>
-		<name>hospital_del_mar_full_edges</name>
+		<name>hospital_san_pau</name>
 		<styleUrl>#m_ylw-pushpin</styleUrl>
 		<LineString>
 			<tessellate>1</tessellate>
 			<coordinates>
-				2.161678570565826,41.39471057967887,0 2.190383891995731,41.37305293437815,0 2.234404959385472,41.40596705149167,0 2.204678237326931,41.42805901243324,0 2.161678570565826,41.39471057967887,0 
+				2.145048002539507,41.4050608506593,0 2.1571765725048,41.39627860229291,0 2.183766483031397,41.40383335668264,0 2.19379567964471,41.42856731429593,0 2.191569219549341,41.43564394926744,0 2.145048002539507,41.4050608506593,0 
 			</coordinates>
 		</LineString>
 		<atom:link rel="app" href="https://www.google.com/earth/about/versions/#earth-pro" title="Google Earth Pro 7.3.6.10441"></atom:link>

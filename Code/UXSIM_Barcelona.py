@@ -12,6 +12,14 @@ import configparser
 from pathlib import Path
 from test_map_verify import *
 
+#region Define data formats
+get_full_edge_map = False
+get_important_edge_map = False
+get_important_edge_gif = False
+get_important_edge_time_average = True
+get_UXSIM_gif = False
+
+#endregion
 
 #region Get values from parameters.ini
 config = configparser.ConfigParser()
@@ -23,7 +31,7 @@ config = configparser.ConfigParser()
 config.read(CONFIG_PATH)
 
 zone = config["BASIC"]["zone"]
-
+sim_num = int(config["BASIC"]["sim_num"])
 lat = None
 lon = None
 zoom = None
@@ -43,20 +51,16 @@ elif zone == "hospital_del_mar":
     lat = config["MAP_HOSPITAL_DEL_MAR"]["center_lat"]
     lon = config["MAP_HOSPITAL_DEL_MAR"]["center_lon"]
     zoom = config["MAP_HOSPITAL_DEL_MAR"]["zoom"]
+elif zone == "hospital_san_pau":
+    lat = config["MAP_HOSPITAL_SAN_PAU"]["center_lat"]
+    lon = config["MAP_HOSPITAL_SAN_PAU"]["center_lon"]
+    zoom = config["MAP_HOSPITAL_SAN_PAU"]["zoom"]
+elif zone == "barcelona_completa":
+    lat = config["MAP_BARCELONA_COMPLETA"]["center_lat"]
+    lon = config["MAP_BARCELONA_COMPLETA"]["center_lon"]
+    zoom = config["MAP_BARCELONA_COMPLETA"]["zoom"]
 #endregion
 
-#This value is used for the number of the simulation.
-
-sim_num = 4 #NO FER EL 4
-create_map_gif(    
-    zone+"/edges_"+zone+"_important.parquet",
-    zone+"/RESULTS/simulation"+str(sim_num)+".parquet",
-    zone+"/MAPA/mapa_"+str(sim_num)+"_important_links",
-    lat,
-    lon,
-    3600,
-    5 #This marks the time separation between frames of the .gif in minutes    
-)
 #region Data format and functions
 _buffer_edge = []
 _buffer_veh = []
@@ -119,38 +123,62 @@ def flush_edge_data_to_disk(output_path: str):
 
 #endregion
 
+get_edges_and_junctions_parquet = False
+
 #region Get edges and junctions parquet
-"""
-edges, junctions = get_points_in_area(
-    zone+"/"+zone+".kml", 
-    "Code/osm.net_BARCELONA.xml"
-)
-
-G, pos, colors, edges, junctions = create_graph(edges, junctions)
-
-junct = pd.DataFrame(columns=["id","incoming","x","y"])
-i = 0
-for j in junctions.values():
-    junct.loc[i] = [j.id, j.incoming, j.x, j.y]
-    i += 1
-
-edg = pd.DataFrame(columns=["id", "lanes","length", "speed", "k_jam", "inc_x", "inc_y", "out_x", "out_y"])
-i = 0
-for e in edges.values():
-    try:    
-        o_n = junct.loc[junct["id"] == e.outgoing_edges].iloc[0]
-        d_n = junct.loc[junct["id"] == e.incoming_edges].iloc[0]
-        edg.loc[i] = [e.id, e.lanes, e.length, e.speed, 1000/6.36*e.lanes, o_n["x"], o_n["y"], d_n["x"], d_n["y"]]
+if get_edges_and_junctions_parquet:
+    edges_full, junctions_full = get_points_in_area(
+        zone+"/"+zone+"_full_edges.kml", 
+        "Code/osm.net_BARCELONA.xml"
+    )
+    G_full, pos_full, colors_full, edges_full, junctions_full = create_graph(edges_full, junctions_full)
+    junct_full = pd.DataFrame(columns=["id","incoming","x","y"])
+    i = 0
+    for j in junctions_full.values():
+        junct_full.loc[i] = [j.id, j.incoming, j.x, j.y]
         i += 1
-    except:
-        k = 2
-edg.to_parquet(zone+"/edges_"+zone+"_important.parquet", index=False)
-junct.to_parquet(zone+"/junctions_"+zone+"_important.parquet", index=False)
-"""
+    edg_full = pd.DataFrame(columns=["id", "lanes","length", "speed", "k_jam", "inc_x", "inc_y", "out_x", "out_y"])
+    i = 0
+    for e in edges_full.values():
+        try:    
+            o_n = junct_full.loc[junct_full["id"] == e.outgoing_edges].iloc[0]
+            d_n = junct_full.loc[junct_full["id"] == e.incoming_edges].iloc[0]
+            edg_full.loc[i] = [e.id, e.lanes, e.length, e.speed, 1000/6.36*e.lanes, o_n["x"], o_n["y"], d_n["x"], d_n["y"]]
+            i += 1
+        except:
+            k = 2
+    edg_full.to_parquet(zone+"/edges_"+zone+"_full_edges.parquet", index=False)
+    junct_full.to_parquet(zone+"/junctions_"+zone+"_full_edges.parquet", index=False)
+    
+    edges, junctions = get_points_in_area(
+        zone+"/"+zone+".kml", 
+        "Code/osm.net_BARCELONA.xml"
+    )
+    G, pos, colors, edges, junctions = create_graph(edges, junctions)
+    junct = pd.DataFrame(columns=["id","incoming","x","y"])
+    i = 0
+    for j in junctions.values():
+        junct.loc[i] = [j.id, j.incoming, j.x, j.y]
+        i += 1
+    edg = pd.DataFrame(columns=["id", "lanes","length", "speed", "k_jam", "inc_x", "inc_y", "out_x", "out_y"])
+    i = 0
+    for e in edges.values():
+        try:    
+            o_n = junct.loc[junct["id"] == e.outgoing_edges].iloc[0]
+            d_n = junct.loc[junct["id"] == e.incoming_edges].iloc[0]
+            edg.loc[i] = [e.id, e.lanes, e.length, e.speed, 1000/6.36*e.lanes, o_n["x"], o_n["y"], d_n["x"], d_n["y"]]
+            i += 1
+        except:
+            k = 2
+    edg.to_parquet(zone+"/edges_"+zone+"_important_edges.parquet", index=False)
+    junct.to_parquet(zone+"/junctions_"+zone+"_important_edges.parquet", index=False)
 #endregion
 
+max_time = 3600*6
+traffic = 0
+time_traffic = max_time - 1800
+points = 95
 simulation_name = zone+"_"+str(sim_num)
-max_time = 3600
 deltan = 5
 reaction_time = 1
 duo_update_time=10
@@ -162,6 +190,7 @@ instantaneous_TT_timestep_interval=5
 load_from_previously_saved = True
 junctions = None
 edges = None
+
 
 if not load_from_previously_saved:
     print("loading from zero")
@@ -214,11 +243,7 @@ else:
 #W.set_routing_mode("dynamic")
 #W.route_choice_principle = "DUE"
 
-
-traffic = 0.0385
-time_traffic = 3000
-
-sample_time_between_timestamps = 2
+sample_time_between_timestamps = 10
 W.show_progress_deltat_timestep = sample_time_between_timestamps
 current_time = 0
 results = []
@@ -233,23 +258,22 @@ def log_link_data(W):
     elapsed_time = time2 - time1
     time1 = time2
     average_time.append(elapsed_time)
-    for e in edges:
+    for e in edges_important_ids:
         collect_edge_data(
             edge_id=e,
             num_veh=W.get_link(e).num_vehicles,
-            speed_veh=W.get_link(e).speed,
+            speed_veh=float(W.get_link(e).speed)/1.275,
             time=current_time,
             k=0,
             j=traffic
         )
-
 #region Add random traffic
 junction_list = None
 
 if not load_from_previously_saved:
     junction_list = list(junctions.values())
     print("1")
-    for _ in range(400):
+    for _ in range(points):
         origin = random.choice(junction_list)
         destination = random.choice(junction_list)
         while destination.id == origin.id:
@@ -264,7 +288,7 @@ if not load_from_previously_saved:
 else:
     junction_list = junctions
     print("2")
-    for _ in range(400):
+    for _ in range(points):
         origin = random.choice(junction_list)
         destination = random.choice(junction_list)
         time_start = random.randint(0,time_traffic)
@@ -278,7 +302,6 @@ else:
             time_traffic,
             traffic
         )
-
 #endregion
 
 
@@ -291,38 +314,46 @@ W.analyzer.print_simple_stats()
 flush_edge_data_to_disk(
     zone+"/RESULTS/simulation"+str(sim_num)+".parquet"
 )
-get_mapa_all_edges(
-    zone+"/edges_"+zone+"_full_scenario.parquet",
-    zone+"/RESULTS/simulation"+str(sim_num)+".parquet",
-    zone+"/MAPA/mapa_"+str(sim_num)+"_full_scenario",
-    lat,
-    lon,
-    3600,
-    6
-)
-get_mapa_all_edges(
-    zone+"/edges_"+zone+"_important.parquet",
-    zone+"/RESULTS/simulation"+str(sim_num)+".parquet",
-    zone+"/MAPA/mapa_"+str(sim_num)+"_important_links",
-    lat,
-    lon,
-    3600,
-    6
-)
-create_map_gif(    
-    zone+"/edges_"+zone+"_important.parquet",
-    zone+"/RESULTS/simulation"+str(sim_num)+".parquet",
-    zone+"/MAPA/mapa_"+str(sim_num)+"_important_links",
-    lat,
-    lon,
-    3600,
-    5 #This marks the time separation between frames of the .gif in minutes    
-)
 
-W.analyzer.network_fancy(
-    animation_speed_inverse=30, 
-    sample_ratio=0.5, 
-    interval=3, 
-    trace_length=3, 
-    network_font_size=0
+if get_full_edge_map:
+    get_mapa_all_edges(
+        zone+"/edges_"+zone+"_full_scenario.parquet",
+        zone+"/RESULTS/simulation"+str(sim_num)+".parquet",
+        zone+"/MAPA/mapa_"+str(sim_num)+"_full_scenario_",
+        lat,
+        lon,
+        max_time,
+        6
+    )
+if get_important_edge_map:
+    get_mapa_all_edges(
+        zone+"/edges_"+zone+"_important.parquet",
+        zone+"/RESULTS/simulation"+str(sim_num)+".parquet",
+        zone+"/MAPA/mapa_"+str(sim_num)+"_important_links_",
+        lat,
+        lon,
+        max_time,
+        6
+    )
+if get_important_edge_gif:
+    create_map_gif_standard_LOS(    
+        zone+"/edges_"+zone+"_important.parquet",
+        zone+"/RESULTS/simulation"+str(sim_num)+".parquet",
+        zone+"/MAPA/mapa_"+str(sim_num)+"_important_links",
+        lat,
+        lon,
+        max_time,
+        5, #This marks the time separation between frames of the .gif in minutes
+        zone+"/GIFS/gif_simulation_"+str(sim_num)+"_"+str(traffic)+".gif"    
+    )
+if get_important_edge_time_average:
+    divide_data_in_time_slots("eixample", "eixample/edges_eixample_important.parquet","eixample/RESULTS/simulation"+str(sim_num)+".parquet", 30)
+
+if get_UXSIM_gif:
+    W.analyzer.network_fancy(
+        animation_speed_inverse=30, 
+        sample_ratio=0.5, 
+        interval=3, 
+        trace_length=3, 
+        network_font_size=0
     )

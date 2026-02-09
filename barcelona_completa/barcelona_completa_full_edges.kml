@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
 <Document>
-	<name>hospital_del_mar_full_edges.kml</name>
-	<StyleMap id="m_ylw-pushpin">
+	<name>barcelona_all_edges.kml</name>
+	<StyleMap id="m_ylw-pushpin0">
 		<Pair>
 			<key>normal</key>
 			<styleUrl>#s_ylw-pushpin</styleUrl>
 		</Pair>
 		<Pair>
 			<key>highlight</key>
-			<styleUrl>#s_ylw-pushpin_hl</styleUrl>
+			<styleUrl>#s_ylw-pushpin_hl2</styleUrl>
 		</Pair>
 	</StyleMap>
 	<Style id="s_ylw-pushpin">
@@ -21,7 +21,7 @@
 			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
 		</IconStyle>
 	</Style>
-	<Style id="s_ylw-pushpin_hl">
+	<Style id="s_ylw-pushpin_hl2">
 		<IconStyle>
 			<scale>1.3</scale>
 			<Icon>
@@ -31,12 +31,12 @@
 		</IconStyle>
 	</Style>
 	<Placemark>
-		<name>hospital_del_mar_full_edges</name>
-		<styleUrl>#m_ylw-pushpin</styleUrl>
+		<name>barcelona_all_edges</name>
+		<styleUrl>#m_ylw-pushpin0</styleUrl>
 		<LineString>
 			<tessellate>1</tessellate>
 			<coordinates>
-				2.161678570565826,41.39471057967887,0 2.190383891995731,41.37305293437815,0 2.234404959385472,41.40596705149167,0 2.204678237326931,41.42805901243324,0 2.161678570565826,41.39471057967887,0 
+				2.097389605585982,41.38667341711981,0 2.098090653276921,41.37324425970013,0 2.190763038185415,41.36485360745107,0 2.234197273896645,41.40922882963547,0 2.21508241805864,41.42686983814773,0 2.206020759171026,41.44535888114447,0 2.193148697406306,41.45656474966011,0 2.189114276694579,41.46119710529556,0 2.141177938160044,41.44117238669684,0 2.09663301825088,41.40442673519455,0 2.097389605585982,41.38667341711981,0 
 			</coordinates>
 		</LineString>
 		<atom:link rel="app" href="https://www.google.com/earth/about/versions/#earth-pro" title="Google Earth Pro 7.3.6.10441"></atom:link>

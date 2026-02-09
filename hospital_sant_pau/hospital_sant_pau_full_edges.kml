@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
 <Document>
-	<name>hospital_del_mar_full_edges.kml</name>
+	<name>hospital_san_pau_full_edges.kml</name>
 	<StyleMap id="m_ylw-pushpin">
 		<Pair>
 			<key>normal</key>
@@ -31,12 +31,12 @@
 		</IconStyle>
 	</Style>
 	<Placemark>
-		<name>hospital_del_mar_full_edges</name>
+		<name>hospital_san_pau_full_edges</name>
 		<styleUrl>#m_ylw-pushpin</styleUrl>
 		<LineString>
 			<tessellate>1</tessellate>
 			<coordinates>
-				2.161678570565826,41.39471057967887,0 2.190383891995731,41.37305293437815,0 2.234404959385472,41.40596705149167,0 2.204678237326931,41.42805901243324,0 2.161678570565826,41.39471057967887,0 
+				2.186961532360825,41.40283541489389,0 2.196790420194015,41.42975848529134,0 2.192917855176615,41.44081567421465,0 2.169295366406674,41.42391638312757,0 2.153391847273365,41.41380821503211,0 2.141829461063172,41.4043508315952,0 2.15564052643584,41.39356683255996,0 2.185801206918496,41.40116642432482,0 2.186883307949616,41.40256384461293,0 2.18692608199728,41.40261363261134,0 2.186931144790065,41.40267456446121,0 2.186961606311371,41.40276018394475,0 2.186952879992063,41.40281181441301,0 
 			</coordinates>
 		</LineString>
 		<atom:link rel="app" href="https://www.google.com/earth/about/versions/#earth-pro" title="Google Earth Pro 7.3.6.10441"></atom:link>
