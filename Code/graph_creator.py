@@ -20,6 +20,25 @@ def create_graph(edges, junctions):
             G.add_edge(e.incoming_edges, e.outgoing_edges, **e.as_dict())
         else:
             print("Not found") 
+    pos = {j.id: (float(j.x), float(j.y)) for j in junctions.values()}
+    colors = [d["color"] for _, d in G.nodes(data=True)]
+    return G, pos, colors, edges, junctions
+
+def create_graph_lists(edges, junctions):
+    #This function will create a NetworkX Digrapg with the edges and functions given as parameters.
+    #The returned parameters will be the graph, the position of the nodes, a color for reference and the
+    #given edges and junctions
+    G = nx.DiGraph()
+    for j in junctions:
+        if j["has_tls"] == 1:
+            G.add_node(j["id"], color='red', has_tls=True, x=j["x"], y=j["y"])
+        else:
+            G.add_node(j["id"], color='green', has_tls=True, x=j["x"], y=j["y"])
+    for e in edges:
+        if G.has_node(e["incoming_edges"]) and G.has_node(e["outgoing_edges"]):
+            G.add_edge(e["incoming_edges"], e["outgoing_edges"], **e)
+        else:
+            print("Not found") 
     #region Deprecated
     """
     #This part of the code removes nodes that have just one incoming and 
@@ -50,7 +69,7 @@ def create_graph(edges, junctions):
     G.remove_nodes_from(nodes_to_remove)
     """
     #endregion
-    pos = {j.id: (float(j.x), float(j.y)) for j in junctions.values()}
+    pos = {j["id"]: (float(j["x"]), float(j["y"])) for j in junctions}
     colors = [d["color"] for _, d in G.nodes(data=True)]
     return G, pos, colors, edges, junctions
 

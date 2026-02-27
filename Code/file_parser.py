@@ -61,6 +61,14 @@ class JunctionClass:
         self.y = y
     def get_data(self):
         return [self.id, self.incoming, self.has_tls, self.x, self.y]
+    def as_dict(self):
+        return {
+            "id": self.id,
+            "incoming": self.incoming,
+            "has_tls": self.has_tls,
+            "x": self.x,
+            "y": self.y
+        }
 
 def edges_junctions_getter(filename):
     #This function obtains all the edges and junctions from an hmtl file parsed as a SUMO file.

@@ -1,0 +1,43 @@
+{
+  "graph": {
+    "total_nodes": 8160,
+    "total_edges": 14103
+  },
+  "origins": [
+    "30237873",
+    "30295271",
+    "876375351",
+    "1295283770"
+  ],
+  "coverage_radius_m": 200,
+  "target_coverage": 0.95,
+  "outbound": {
+    "description": "Hospital \u2192 Patient (ambulance departs)",
+    "corridor_edges": 2388,
+    "coverage_pct": 95.02,
+    "leaf_nodes": 265,
+    "root_nodes": 0,
+    "files": {
+      "edges": "outbound_edges.json",
+      "nodes": "outbound_nodes.json",
+      "leaves": "outbound_leaves.json"
+    }
+  },
+  "inbound": {
+    "description": "Patient \u2192 Hospital (ambulance returns)",
+    "corridor_edges": 1891,
+    "coverage_pct": 88.74,
+    "leaf_nodes": 0,
+    "root_nodes": 308,
+    "files": {
+      "edges": "inbound_edges.json",
+      "nodes": "inbound_nodes.json",
+      "leaves": "inbound_leaves.json"
+    }
+  },
+  "combined": {
+    "fully_covered_nodes": 6923,
+    "fully_covered_pct": 84.84,
+    "note": "nodes reachable FROM a hospital AND that can reach a hospital"
+  }
+}
