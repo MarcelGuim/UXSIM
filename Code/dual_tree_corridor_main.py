@@ -99,10 +99,10 @@ if __name__ == "__main__":
         backbone_reuse_discount=0.3,
         primary_reuse_discount=0.4,
         secondary_reuse_discount=0.4,
-        output_dir="result_emergency_routes",
+        output_dir="result_emergency_routes_2",
         output_prefix_outbound="outbound",
         output_prefix_inbound="inbound",
-        map_output_file=f"{zone}_dual_tree_corridors.html",
+        map_output_file=f"{zone}_dual_tree_corridors_2.html",
     )
 
     # ---- Final summary ----

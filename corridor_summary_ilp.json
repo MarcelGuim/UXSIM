@@ -1,0 +1,34 @@
+{
+  "total_nodes": 3237,
+  "outbound": {
+    "corridor_edges": 2225,
+    "covered_nodes": 7643,
+    "coverage_pct": 236.11,
+    "leaf_nodes": 265,
+    "root_nodes": 4,
+    "tier_counts": {
+      "backbone": 210,
+      "primary": 934,
+      "secondary": 794,
+      "tertiary": 287
+    }
+  },
+  "inbound": {
+    "corridor_edges": 1811,
+    "covered_nodes": 7180,
+    "coverage_pct": 221.81,
+    "leaf_nodes": 4,
+    "root_nodes": 308,
+    "tier_counts": {
+      "backbone": 295,
+      "primary": 805,
+      "secondary": 0,
+      "tertiary": 711
+    }
+  },
+  "combined": {
+    "fully_covered_nodes": 6755,
+    "fully_covered_pct": 208.68,
+    "note": "nodes reachable FROM a hospital AND that can reach a hospital"
+  }
+}

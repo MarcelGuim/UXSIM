@@ -4,7 +4,7 @@ from collections import defaultdict
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from graph_creator import *
+#from graph_creator import *
 from file_parser import *
 import pandas
 from shapely.geometry import Point, Polygon
@@ -32,72 +32,72 @@ def get_edges():
     endpoints_inbound = []
     endpoints_outbound = []
     hospitals = []
-    with open("result_emergency_routes/inbound_edges.json", "r", encoding="utf-8") as f:
+    with open("ILP/data/inbound_edges.json", "r", encoding="utf-8") as f:
         edges_inbound = json.load(f)
-    with open("result_emergency_routes/outbound_edges.json", "r", encoding="utf-8") as f:
+    with open("ILP/data/outbound_edges.json", "r", encoding="utf-8") as f:
         edges_outbound = json.load(f)
-    with open("result_emergency_routes/inbound_nodes.json", "r", encoding="utf-8") as f:
+    with open("ILP/data//inbound_nodes.json", "r", encoding="utf-8") as f:
         nodes_inbound = json.load(f)
-    with open("result_emergency_routes/outbound_nodes.json", "r", encoding="utf-8") as f:
+    with open("ILP/data//outbound_nodes.json", "r", encoding="utf-8") as f:
         nodes_outbound = json.load(f)
-    with open("result_emergency_routes/inbound_leaves.json", "r", encoding="utf-8") as f:
+    with open("ILP/data/inbound_leaves.json", "r", encoding="utf-8") as f:
         endpoints_inbound = json.load(f)
         hospitals = endpoints_inbound["origin_nodes"]
         endpoints_inbound = endpoints_inbound["entry_root_nodes"]
-    with open("result_emergency_routes/outbound_leaves.json", "r", encoding="utf-8") as f:
+    with open("ILP/data/outbound_leaves.json", "r", encoding="utf-8") as f:
         endpoints_outbound = json.load(f)
         endpoints_outbound = endpoints_outbound["dead_end_leaves"]
-
     return edges_inbound, edges_outbound, nodes_inbound, nodes_outbound, endpoints_inbound, endpoints_outbound, hospitals
 
 def get_edges_dict():
-    with open("result_emergency_routes/inbound_edges.json", "r", encoding="utf-8") as f:
+    with open("ILP/data/inbound_edges_dict.json", "r", encoding="utf-8") as f:
         edges_inbound = json.load(f)
 
-    with open("result_emergency_routes/outbound_edges.json", "r", encoding="utf-8") as f:
+    with open("ILP/data/outbound_edges_dict.json", "r", encoding="utf-8") as f:
         edges_outbound = json.load(f)
 
-    with open("result_emergency_routes/inbound_nodes_with_data.json", "r", encoding="utf-8") as f:
+    with open("ILP/data/inbound_nodes_dict.json", "r", encoding="utf-8") as f:
         nodes_inbound = json.load(f)
 
-    with open("result_emergency_routes/outbound_nodes_with_data.json", "r", encoding="utf-8") as f:
+    with open("ILP/data/outbound_nodes_dict.json", "r", encoding="utf-8") as f:
         nodes_outbound = json.load(f)
 
-    with open("result_emergency_routes/inbound_leaves.json", "r", encoding="utf-8") as f:
+    with open("ILP/data/inbound_leaves.json", "r", encoding="utf-8") as f:
         inbound_data = json.load(f)
         hospitals = inbound_data["origin_nodes"]
         endpoints_inbound = inbound_data["entry_root_nodes"]
 
-    with open("result_emergency_routes/outbound_leaves.json", "r", encoding="utf-8") as f:
+    with open("ILP/data/outbound_leaves.json", "r", encoding="utf-8") as f:
         outbound_data = json.load(f)
         endpoints_outbound = outbound_data["dead_end_leaves"]
 
-    edges_inbound_dict = {e["id"]: e for e in edges_inbound}
-    edges_outbound_dict = {e["id"]: e for e in edges_outbound}
-    nodes_inbound_dict = {n["id"]: n for n in nodes_inbound}
-    nodes_outbound_dict = {n["id"]: n for n in nodes_outbound}
-    return edges_inbound_dict, edges_outbound_dict, nodes_inbound_dict, nodes_outbound_dict, endpoints_inbound, endpoints_outbound, hospitals
+    return edges_inbound, edges_outbound, nodes_inbound, nodes_outbound, endpoints_inbound, endpoints_outbound, hospitals
 
 def convert_to_dict(edges, nodes):
-    excluded_keys_edges = {"density", "from", "to", "tier"}
-    excluded_keys_nodes = {"tier", "is_origin", "is_leaf", "is_root", "covered", "color"}
-    edges_dict = {e['id']: EdgeClass(**{k:v for k,v in e.items() if k not in excluded_keys_edges})for e in edges}
-    nodes_dict = {n['id']: JunctionClass(**{k:v for k,v in n.items() if k not in excluded_keys_nodes})for n in nodes}
+    edges_dict = {}
+    for e in edges:
+        edges_dict[e["id"]] = e
+    
+    nodes_dict = {}
+    for n in nodes:
+        nodes_dict[n["id"]] = n
     #nodes_dict = {n['id']: JunctionClass(**n) for n in nodes}
+
+
     return edges_dict, nodes_dict
 
 def create_graph(edges, nodes):
     G = nx.DiGraph()
     nodes_with_edge = []
     nodes_with_no_edge = []
-    for e in edges:
+    for key, e in edges.items():
         G.add_edge(e["incoming_edges"], e["outgoing_edges"], **e)
         if e["incoming_edges"] not in nodes_with_edge:
             nodes_with_edge.append(e["incoming_edges"])
         elif e["outgoing_edges"] not in nodes_with_edge:
             nodes_with_edge.append(e["outgoing_edges"])
-    for n in nodes:
-        if n["id"] in nodes_with_edge:
+    for key, n in nodes.items():
+        if key in nodes_with_edge:
             G.add_node(n["id"], x = n["x"], y = n["y"])
         else:
             nodes_with_no_edge.append(n["id"])
@@ -154,20 +154,20 @@ def get_routes(edges_inbound, edges_outbound, nodes_inbound, nodes_outbound, end
         routes_outbound_edges.append(edge_ids)
         routes_outbound_nodes.append(short_route)
 
-    with open("result_emergency_routes/routes_inbound_edges.json", "w", encoding="utf-8") as f:
+    with open("ILP/data/routes_inbound_edges.json", "w", encoding="utf-8") as f:
         json.dump(routes_inbound_edges, f, indent = 4, default = str)
 
-    with open("result_emergency_routes/routes_inbound_nodes.json", "w", encoding="utf-8") as f:
+    with open("ILP/data/routes_inbound_nodes.json", "w", encoding="utf-8") as f:
         json.dump(routes_inbound_nodes, f, indent = 4, default = str)
 
-    with open("result_emergency_routes/routes_outbound_edges.json", "w", encoding="utf-8") as f:
+    with open("ILP/data/routes_outbound_edges.json", "w", encoding="utf-8") as f:
         json.dump(routes_outbound_edges, f, indent = 4, default = str)
 
-    with open("result_emergency_routes/routes_outbound_nodes.json", "w", encoding="utf-8") as f:
+    with open("ILP/data/routes_outbound_nodes.json", "w", encoding="utf-8") as f:
         json.dump(routes_outbound_nodes, f, indent = 4, default = str)
 
 def get_nodes_in_abs(nodes_inbound, nodes_outbound):
-    df = pd.read_csv("poblacio_abs/arees_basiques_de_salut_20260210.csv", sep=",")    
+    df = pd.read_csv("ILP/poblacio_abs/arees_basiques_de_salut_20260210.csv", sep=",")    
     abs_polygons = []
     for index, row in df.iterrows():
         multipolygon = row["Geometry"]
@@ -178,8 +178,8 @@ def get_nodes_in_abs(nodes_inbound, nodes_outbound):
             polygons = [geom]
         abs_polygons.append([row["Codi"], polygons])
     ids = []
-    nodes_with_no_abs = []
-    for n in nodes_inbound:
+    nodes_with_no_abs_inbound = []
+    for key, n in nodes_inbound.items():
         node_lonlat = [n["x"],n["y"]]
         point = Point(node_lonlat)
         found = False
@@ -193,9 +193,9 @@ def get_nodes_in_abs(nodes_inbound, nodes_outbound):
             if found:
                 break
         if not found:
-            nodes_with_no_abs.append([n["id"],node_lonlat])
-    
-    for n in nodes_outbound:
+            nodes_with_no_abs_inbound.append([n["id"],node_lonlat])
+    nodes_with_no_abs_outbound = []
+    for key, n in nodes_outbound.items():
         node_lonlat = [n["x"],n["y"]]
         point = Point(node_lonlat)
         found = False
@@ -208,10 +208,17 @@ def get_nodes_in_abs(nodes_inbound, nodes_outbound):
             if found:
                 break
         if not found:
-            nodes_with_no_abs.append([n["id"],node_lonlat])
-    with open("result_emergency_routes/inbound_nodes_with_abs.json", "w") as f:
+            nodes_with_no_abs_outbound.append([n["id"],node_lonlat])
+    
+    print(f"Nodes inbound with no ABS: {len(nodes_with_no_abs_inbound)}")
+    print(f"Nodes outbound with no ABS: {len(nodes_with_no_abs_outbound)}")
+    with open("ILP/to_fix/inbound_nodes_with_no_abs.json", "w") as f:
+        json.dump(nodes_with_no_abs_inbound, f, indent=2)
+    with open("ILP/to_fix/outbound_nodes_with_no_abs.json", "w") as f:
+        json.dump(nodes_with_no_abs_outbound, f, indent=2)    
+    with open("ILP/data/inbound_nodes_with_abs.json", "w") as f:
         json.dump(nodes_inbound, f, indent=2)
-    with open("result_emergency_routes/outbound_nodes_with_abs.json", "w") as f:
+    with open("ILP/data/outbound_nodes_with_abs.json", "w") as f:
         json.dump(nodes_outbound, f, indent=2)
 
 def get_populatuion_of_node(nodes_inbound, nodes_outbound):
@@ -278,10 +285,10 @@ def get_populatuion_of_node(nodes_inbound, nodes_outbound):
             id = node["id"]
             print(f"node {id} not in Barcelona")
 
-    with open("result_emergency_routes/nodes_inbound_population.json", "w", encoding="utf-8") as f:
+    with open("ILP/data/nodes_inbound_population.json", "w", encoding="utf-8") as f:
         json.dump(nodes_inbound, f, indent=4, ensure_ascii=False)
 
-    with open("result_emergency_routes/nodes_outbound_population.json", "w", encoding="utf-8") as f:
+    with open("ILP/data/result_emergency_routes/nodes_outbound_population.json", "w", encoding="utf-8") as f:
         json.dump(nodes_outbound, f, indent=4, ensure_ascii=False)
 
 def plot_choropleth_folium(
@@ -744,9 +751,13 @@ def get_routes_within_fences(filename_routes_inbound, filename_routes_outbound, 
     final_routes_inbound = []
     for route in routes_inbound:
         correct = True
+        route_alt = []
         for n in route:
-            if n not in nodes_inbound:
+            if n in nodes_inbound:
+                route_alt.append(n)
+            else:
                 correct = False
+                #final_routes_inbound.append(route_alt)
                 break
         if correct:
             final_routes_inbound.append(route)
@@ -754,17 +765,33 @@ def get_routes_within_fences(filename_routes_inbound, filename_routes_outbound, 
     final_routes_outbound = []
     for route in routes_outbound:
         correct = True
+        route_alt = []
         for n in route:
-            if n not in nodes_outbound:
+            if n in nodes_outbound:
+                route_alt.append(n)
+            else:
                 correct = False
+                #final_routes_outbound.append(route_alt)
                 break
         if correct:
             final_routes_outbound.append(route)
     
+    print(len(routes_inbound))
+    print(len(final_routes_inbound))
+    print(len(routes_outbound))
+    print(len(final_routes_outbound))
+
+
     with open("ILP/data/final_routes_inbound.json", "w", encoding="utf-8") as f:
-        json.dump(routes_inbound, f, indent = 4, default = str)
+        json.dump(final_routes_inbound, f, indent = 4, default = str)
     with open("ILP/data/final_routes_outbound.json", "w", encoding="utf-8") as f:
-        json.dump(routes_outbound, f, indent = 4, default = str)
+        json.dump(final_routes_outbound, f, indent = 4, default = str)
+
+def append_node_info_in_edge(node, edge):
+    print(node["id"])
+    edge["abs"].append(node["abs"])
+    edge["population"] += float(node["population"])
+    edge["accidents"] += float(node["accidents"])
 
 def get_routes_within_parameters(filename_routes_inbound, filename_routes_outbound, filename_nodes_inbound, filename_nodes_outbound, filename_edges_inbound, filename_edges_outbound, filename_leaves_inbound, filename_leaves_outbound):
     #region Get data from JSON
@@ -785,19 +812,170 @@ def get_routes_within_parameters(filename_routes_inbound, filename_routes_outbou
     with open(filename_leaves_outbound, "r", encoding="utf-8") as f:
         leaves_outbound = json.load(f)
     #endregion
-
+    G_in = create_graph(edges_inbound, nodes_inbound)
+    G_out = create_graph(edges_outbound, nodes_outbound)
+    print(len(nodes_inbound))
     
+    for key, n in nodes_inbound.items():
+        try:   
+            po = n["population"]
+        except:
+            print(n["id"])
+            print(f"{n['y']}, {n['x']}")
+    
+    for key, e in edges_inbound.items():
+        edges_inbound[key]["population"] = 0
+        edges_inbound[key]["accidents"] = 0
+        edges_inbound[key]["abs"] = []
+
+    for key, e in edges_outbound.items():
+        edges_outbound[key]["population"] = 0
+        edges_outbound[key]["accidents"] = 0
+        edges_outbound[key]["abs"] = []
+
+    for route in routes_inbound:
+        pairs = [list(pair) for pair in zip(route[:-1], route[1:])]
+        nodes_in_route = []
+        for p in pairs:
+            edge_info = G_in.get_edge_data(p[0], p[1])
+            edge = edges_inbound[edge_info["id"]]
+            nodes_in_route.append(p[0])
+            for n in nodes_in_route:
+                node = nodes_inbound[n]
+                append_node_info_in_edge(node, edge)
+
+    for route in routes_outbound:
+        pairs = [list(pair) for pair in zip(route[:-1], route[1:])]
+        nodes_in_route = []
+        for p in pairs:
+            edge_info = G_out.get_edge_data(p[0], p[1])
+            edge = edges_outbound[edge_info["id"]]
+            nodes_in_route.append(p[0])
+            for n in nodes_in_route:
+                node = nodes_outbound[n]
+                append_node_info_in_edge(node, edge)
+
+    with open("ILP/data/edges_inbound_with_info.json", "w", encoding="utf-8") as f:
+        json.dump(edges_inbound, f, indent = 4, default = EdgeClass.json_serializer)
+
+    with open("ILP/data/edges_outbound_with_info.json", "w", encoding="utf-8") as f:
+        json.dump(edges_outbound, f, indent = 4, default = EdgeClass.json_serializer)
+
+def get_nodes_in_area(filename_nodes_inbound, filename_nodes_outbound):
+    with open(filename_nodes_inbound, "r", encoding="utf-8") as f:
+        nodes_inbound = json.load(f)
+    with open(filename_nodes_outbound, "r", encoding="utf-8") as f:
+        nodes_outbound = json.load(f)
+    
+    final_inbound = {}
+    non_final_inbound = []
+    for key, n in nodes_inbound.items():
+        try:
+            pop = n["population"]
+            abs = n["abs"]
+            acc = n["accidents"]
+            final_inbound[key] = n
+        except:
+            non_final_inbound.append(key)
+            continue
+
+    final_outbound = {}
+    non_final_outbound = []
+    for key, n in nodes_outbound.items():
+        try:
+            pop = n["population"]
+            abs = n["abs"]
+            acc = n["accidents"]
+            final_outbound[key] = n
+        except:
+            non_final_outbound.append(key)
+            continue
+    print(len(nodes_inbound))
+    print(len(final_inbound))
+    print(len(nodes_outbound))
+    print(len(final_outbound)) 
+    with open("ILP/data/nodes_inbound_to_modify.json", "w", encoding="utf-8") as f:
+        json.dump(non_final_inbound, f, indent = 4, default = str)
+    with open("ILP/data/nodes_outbound_to_modify.json", "w", encoding="utf-8") as f:
+        json.dump(non_final_outbound, f, indent = 4, default = str)
+    """
+    with open("ILP/data/nodes_inbound.json", "w", encoding="utf-8") as f:
+        json.dump(final_inbound, f, indent = 4, default = str)
+    with open("ILP/data/nodes_outbound.json", "w", encoding="utf-8") as f:
+        json.dump(final_outbound, f, indent = 4, default = str)
+    """
+
+def see_location_of_points(filename_nodes_inbound, filename_nodes_outbound):
+    with open(filename_nodes_inbound, "r", encoding="utf-8") as f:
+        nodes_inbound = json.load(f)
+    with open(filename_nodes_outbound, "r", encoding="utf-8") as f:
+        nodes_outbound = json.load(f)
+    m = folium.Map(
+        location=[41.398294520907044, 2.166181913615897],
+        zoom_start=12
+        )
+    fg_inb = folium.FeatureGroup(name="Inbound", show=True)
+    for n in nodes_inbound:
+        folium.CircleMarker(
+            location=(n[1][1],n[1][0]), radius=6, color="#FF0000", fill=True,
+            fill_color="#e60000", fill_opacity=0.9,
+            tooltip=f"Inbound endpoint: {n[0]}",
+        ).add_to(fg_inb)
+    fg_out = folium.FeatureGroup(name="Outbound", show=True)
+    for n in nodes_outbound:
+        folium.CircleMarker(
+            location=(n[1][1],n[1][0]), radius=6, color="#001be6", fill=True,
+            fill_color="#001be6", fill_opacity=0.9,
+            tooltip=f"Outbound endpoint: {n[0]}",
+        ).add_to(fg_out)
+    fg_inb.add_to(m)
+    fg_out.add_to(m)
+    folium.LayerControl(collapsed=False, position="topright").add_to(m)
+    m.save("TEST_MAP.html")
+"""
+get_nodes_in_area(
+    "ILP/data/nodes_inbound_dict_deprecated.json",
+    "ILP/data/nodes_outbound_dict_deprecated.json"
+)
 
 get_routes_within_parameters(
     "ILP/data/final_routes_inbound.json",
     "ILP/data/final_routes_outbound.json",
-    "ILP/data/nodes_inbound_accidents.json",
-    "ILP/data/nodes_outbound_accidents.json",
-    "ILP/data/inbound_edges.json",
-    "ILP/data/outbound_edges.json",
+    "ILP/data/nodes_inbound.json",
+    "ILP/data/nodes_outbound.json",
+    "ILP/data/edges_inbound.json",
+    "ILP/data/edges_outbound.json",
     "ILP/data/inbound_leaves.json",
     "ILP/data/outbound_leaves.json"
 )    
+"""
+see_location_of_points(
+    "ILP/to_fix/inbound_nodes_with_no_abs.json",
+    "ILP/to_fix/outbound_nodes_with_no_abs.json"
+)
+
+
+start = False
+if start:
+    edges_inbound, edges_outbound, nodes_inbound, nodes_outbound, endpoints_inbound, endpoints_outbound, hospitals = get_edges()
+    edges_inbound_dict, nodes_inbound_dict = convert_to_dict(edges_inbound, nodes_inbound)
+    edges_outbound_dict, nodes_outbound_dict = convert_to_dict(edges_outbound, nodes_outbound)
+    edges_inbound, edges_outbound, nodes_inbound, nodes_outbound, endpoints_inbound, endpoints_outbound, hospitals = get_edges_dict()
+    check_routes(edges_inbound, edges_outbound, nodes_inbound, nodes_outbound, endpoints_inbound, endpoints_outbound, hospitals)
+    get_routes(edges_inbound, edges_outbound, nodes_inbound, nodes_outbound, endpoints_inbound, endpoints_outbound, hospitals)    
+    get_nodes_in_abs(nodes_inbound, nodes_outbound)
+
+edges_inbound, edges_outbound, nodes_inbound, nodes_outbound, endpoints_inbound, endpoints_outbound, hospitals = get_edges_dict()
+
+#============== NEXT STEPS ================
+"""
+Add population and accident to nodes.
+Check and make sure all nodes have everything, add the ones that don't have it in a separate file, and add them later
+manually or automatically, we'll see
+"""
+
+
+
 #get_accidents_per_node("ILP/data/counts_between_hours.json", "ILP/data/nodes_inbound.json", "ILP/data/nodes_outbound.json")
 #get_emergency_in_Barcelona("poblacio_abs/2015_22_Table_1.csv")
 #edges_inbound, edges_outbound, nodes_inbound, nodes_outbound, endpoints_inbound, endpoints_outbound, hospitals = get_edges()

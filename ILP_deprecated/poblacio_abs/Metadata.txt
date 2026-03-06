@@ -1,0 +1,7 @@
+Enllaç de l'aplicació: https://portaldades.ajuntament.barcelona.cat/ca/estad%C3%ADstiques/yzlntdm2fs
+Títol: Població
+Unitat: Nombre
+Data de publicació : 2026-02-09T13:00:20Z
+Llicència: CC BY 4.0
+Nota: Si la dada és menor que 5 s’indica com ‘..’.
+Tipus Filtre -> Temps: dia; Territori: Municipi, Districte, Barri

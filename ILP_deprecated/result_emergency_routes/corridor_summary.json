@@ -18,9 +18,9 @@
     "leaf_nodes": 265,
     "root_nodes": 0,
     "files": {
-      "edges": "result_emergency_routes_2/outbound_edges.json",
-      "nodes": "result_emergency_routes_2/outbound_nodes.json",
-      "leaves": "result_emergency_routes_2/outbound_leaves.json"
+      "edges": "result_emergency_routes/outbound_edges.json",
+      "nodes": "result_emergency_routes/outbound_nodes.json",
+      "leaves": "result_emergency_routes/outbound_leaves.json"
     }
   },
   "inbound": {
@@ -30,9 +30,9 @@
     "leaf_nodes": 0,
     "root_nodes": 308,
     "files": {
-      "edges": "result_emergency_routes_2/inbound_edges.json",
-      "nodes": "result_emergency_routes_2/inbound_nodes.json",
-      "leaves": "result_emergency_routes_2/inbound_leaves.json"
+      "edges": "result_emergency_routes/inbound_edges.json",
+      "nodes": "result_emergency_routes/inbound_nodes.json",
+      "leaves": "result_emergency_routes/inbound_leaves.json"
     }
   },
   "combined": {

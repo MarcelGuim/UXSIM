@@ -136,7 +136,7 @@ def build_map_from_routes(routes, edges, nodes):
         fg = folium.FeatureGroup(name=f"Route {route_idx+1}")
 
         edge_ids = [
-            G[u][v]["id"] for u, v in zip(route[:-1], route[1:])
+            G[u][v]["id"] for u, v in (route[:-1], route[1:])
         ]
 
         for e in edge_ids:

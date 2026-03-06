@@ -52,6 +52,25 @@ class EdgeClass:
     def get_data(self):
         return [self.lanes, self.length, self.speed, self.outgoing_edges, self.incoming_edges, self.vehicle_speed, self._number_of_vehicles, self._density]    
 
+    def to_json(self):
+        return {
+            "id": self.id,
+            "lanes": self.lanes,
+            "length": self.length,
+            "speed": self.speed,
+            "outgoing_edges": self.outgoing_edges,
+            "incoming_edges": self.incoming_edges,
+            "vehicle_speed": self.vehicle_speed,
+            "number_of_vehicles": self.number_of_vehicles,
+            "density": self.density
+        }
+    
+    @staticmethod
+    def json_serializer(obj):
+        if isinstance(obj, EdgeClass):
+            return obj.to_json()
+        raise TypeError(f"{type(obj)} not JSON serializable")
+
 class JunctionClass:
     def __init__(self,id, incoming, has_tls, x, y):
         self.id = id
