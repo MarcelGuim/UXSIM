@@ -52,7 +52,7 @@ def prepare_parquet_with_ids_data(zone):
     edges = pd.DataFrame(columns=["id", "lon_o", "lat_o", "lon_d", "lat_d"])
     polygon_coords = parse_klm_file(zone+"/"+zone+".kml")
     polygon = Polygon(polygon_coords)
-    df_data = pd.read_csv("data_streets/2025_03_Marc_TRAMS_TRAMS.csv")
+    df_data = pd.read_csv("data_streets/2025_3_TRAMS_TRAMS.csv")
     df_streets = pd.read_csv("data_streets/transit_relacio_trams.csv")
     for _, fila in df_streets.iterrows():
         coords = [float(x) for x in fila['Coordenades'].split(',')]
@@ -230,7 +230,8 @@ def compute_los_time_stats_with_plots_MEAN_LOS_given(zone, i, mean_los_start, me
     plt.close()
 
     return filtered_stats
-compute_los_time_stats_with_plots("eixample", 3)
+
+#compute_los_time_stats_with_plots("eixample", 3)
 #compute_los_time_stats_with_plots_MEAN_LOS_given("eixample", 3, 2.0, 2.6)
 """
 for i in range(3):
@@ -238,8 +239,10 @@ for i in range(3):
     prepare_parquet_with_values("eixample", i)    
     compute_los_time_stats_with_plots("eixample",i)
 """
-#compute_los_time_stats_with_plots("eixample")
-#prepare_parquet_with_ids_data("eixample")
-#prepare_parquet_with_values("eixample")
-#prepare_barcelona_data("eixample")
-#get_dataset_streets_in_area("eixample")
+
+if __name__ == "__main__":    
+    #compute_los_time_stats_with_plots("barcelona_completa")
+    prepare_parquet_with_ids_data("barcelona_completa")
+    prepare_parquet_with_values("barcelona_completa")
+    prepare_barcelona_data("barcelona_completa")
+    get_dataset_streets_in_area("barcelona_completa")

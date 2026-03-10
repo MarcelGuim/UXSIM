@@ -763,7 +763,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 79
   },
   "258465505#1-AddedOffRampNode": {
     "color": "green",
@@ -2114,7 +2115,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 74
   },
   "30243048": {
     "color": "red",
@@ -4037,7 +4039,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "cluster_1595126752_687897174_9876300964": {
     "color": "red",
@@ -4049,7 +4052,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "30243357": {
     "color": "red",
@@ -4191,7 +4195,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "1401857363": {
     "color": "green",
@@ -5087,7 +5092,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 74
   },
   "30296145": {
     "color": "green",
@@ -7296,7 +7302,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "30689100": {
     "color": "green",
@@ -7490,7 +7497,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 74
   },
   "254399268": {
     "color": "green",
@@ -7957,7 +7965,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "1305741263": {
     "color": "green",
@@ -8294,7 +8303,8 @@
     "is_origin": false,
     "is_leaf": true,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "597222067": {
     "color": "green",
@@ -8904,7 +8914,8 @@
     "is_origin": false,
     "is_leaf": true,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 74
   },
   "30254078": {
     "color": "green",
@@ -8942,7 +8953,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "30307934": {
     "color": "green",
@@ -9201,7 +9213,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "26057342": {
     "color": "red",
@@ -10513,7 +10526,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "cluster_12919565844_59850119_724126687_8125229482": {
     "color": "red",
@@ -11331,7 +11345,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 79
   },
   "30243163": {
     "color": "red",
@@ -13488,7 +13503,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 79
   },
   "21638921": {
     "color": "green",
@@ -14137,7 +14153,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "8203998879": {
     "color": "green",
@@ -14305,7 +14322,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 74
   },
   "1588281327": {
     "color": "red",
@@ -14850,7 +14868,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 74
   },
   "330419120": {
     "color": "green",
@@ -15863,7 +15882,8 @@
     "is_origin": false,
     "is_leaf": true,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "330417664": {
     "color": "green",
@@ -16070,7 +16090,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 79
   },
   "544223032": {
     "color": "red",
@@ -16459,7 +16480,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 74
   },
   "319631021": {
     "color": "green",
@@ -17550,7 +17572,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 74
   },
   "30243334": {
     "color": "red",
@@ -17705,7 +17728,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 74
   },
   "8461920640": {
     "color": "green",
@@ -18133,7 +18157,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 74
   },
   "31285267": {
     "color": "green",
@@ -18574,7 +18599,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "2481508957": {
     "color": "green",
@@ -18820,7 +18846,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 79
   },
   "359977425": {
     "color": "green",
@@ -19092,7 +19119,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 74
   },
   "903833761": {
     "color": "green",
@@ -19559,7 +19587,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "12908905303": {
     "color": "green",
@@ -19935,7 +19964,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "30242817": {
     "color": "red",
@@ -20155,7 +20185,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 74
   },
   "30253432": {
     "color": "green",
@@ -20518,7 +20549,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "420553182": {
     "color": "green",
@@ -21011,7 +21043,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "cluster_1710709046_2578612972": {
     "color": "red",
@@ -21231,7 +21264,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 74
   },
   "cluster_2767286510_30312828_536428053": {
     "color": "red",
@@ -21464,7 +21498,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 79
   },
   "5402582931": {
     "color": "green",
@@ -21905,7 +21940,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 74
   },
   "cluster_1120489442_7663721759": {
     "color": "red",
@@ -22411,7 +22447,8 @@
     "is_origin": false,
     "is_leaf": true,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "12898105364": {
     "color": "green",
@@ -22878,7 +22915,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "2235259451": {
     "color": "green",
@@ -23475,7 +23513,8 @@
     "is_origin": false,
     "is_leaf": true,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 74
   },
   "695117639": {
     "color": "green",
@@ -23487,7 +23526,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 74
   },
   "30297272": {
     "color": "green",
@@ -24058,7 +24098,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 74
   },
   "1117832745": {
     "color": "green",
@@ -24447,7 +24488,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "1000063825": {
     "color": "green",
@@ -24641,7 +24683,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "3762069417": {
     "color": "green",
@@ -24965,7 +25008,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 74
   },
   "30617611": {
     "color": "green",
@@ -25640,7 +25684,8 @@
     "is_origin": false,
     "is_leaf": true,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 74
   },
   "603995064": {
     "color": "red",
@@ -25873,7 +25918,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 79
   },
   "815062993": {
     "color": "red",
@@ -26561,7 +26607,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "2765228221": {
     "color": "green",
@@ -28081,7 +28128,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 79
   },
   "391086108": {
     "color": "green",
@@ -28171,7 +28219,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "1933546294": {
     "color": "green",
@@ -28235,7 +28284,8 @@
     "is_origin": false,
     "is_leaf": true,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "1297521235": {
     "color": "green",
@@ -28858,7 +28908,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "cluster_364992715_565479524": {
     "color": "red",
@@ -29234,7 +29285,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "cluster_178518958_2691105735_7195505947": {
     "color": "red",
@@ -29493,7 +29545,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 74
   },
   "240882893": {
     "color": "green",
@@ -30350,7 +30403,8 @@
     "is_origin": false,
     "is_leaf": false,
     "is_root": false,
-    "covered": true
+    "covered": true,
+    "abs": 41
   },
   "273102085": {
     "color": "red",
